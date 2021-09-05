@@ -1,3 +1,8 @@
+// Funzione random tra 2 numeri min & max
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min) 
+}
+
 // Chiedere all'utente di inserire il numero di celle di cui sarà composto il campo da gioco.
 var numeroDiCelle = parseInt(prompt("Inserisci il numero di celle di cui sarà composto il campo da gioco."));
 
@@ -20,24 +25,13 @@ disegnaTabella(numeroDiCelle);
 
 var campoDaGioco = document.getElementById("campo-da-gioco");
 
-campoDaGioco.addEventListener("click",
-    function(event) {
 
-        if (event.target.classList.value == "quadrato") {
-            event.target.classList.add("rosso");
-            alert(event.target.innerHTML);
-        } else {
-            event.target.classList.remove("rosso");
-        }
-        
-    }
-); 
 // dato l'array e l'elemento da cercare, restituisce true se l'elemento è presente altrimenti false
 function inArray(arr, el) {
     
     var count = 0;
    
-    while (count < arr.length && trovato == false) {
+    while (count < arr.length) {
         if (arr[count] == el) {
             return true;
         }
@@ -45,3 +39,57 @@ function inArray(arr, el) {
     }
     return false;
 }
+
+// Il computer deve generare 16 numeri casuali tra 1 e 100 (bombe).
+var bombe = [];
+// I numeri non possono essere duplicati.
+
+
+while ( bombe.length < 3) {
+
+    var n = random(1, 10);
+
+    if ( inArray(bombe, n) == false) {
+        bombe.push(n);  
+    }
+}
+
+console.log(bombe)
+
+var numeriValidi = []; 
+
+campoDaGioco.addEventListener("click",
+    function(event) {
+
+        event.target.classList.add("cliccato");
+        var numeroCliccato = parseInt(event.target.innerHTML);
+
+        if ( inArray(bombe, numeroCliccato) == true) {
+            alert("HAI PERSO! il tuo punteggio è: " + numeriValidi.length);
+            event.target.classList.add("rosso")
+        }  else if (inArray(numeriValidi, numeroCliccato)==true) {
+            alert("HAI GIA' CLICCATO SU QUESTO NUMERO");
+        } else {
+            numeriValidi.push(numeroCliccato);
+            event.target.classList.add("verde")
+            if (numeriValidi.length == (numeroDiCelle - bombe.length)) {
+                alert("BRAVISSIMO HAI VINTO IL GIOCO");
+            }
+        }
+
+        
+    }
+); 
+
+// In seguito il giocatore clicca sulle celle numerate (non può cliccare più volte sulla stessa cella)
+// La partita termina quando il giocatore clicca su un numero “vietato” o clicca su tutte le celle che non sono delle bombe.
+// Al termine della partita il software deve comunicare il punteggio.
+// BONUS: (da fare solo se funziona tutto il resto)
+// all’inizio il software richiede anche una difficoltà all’utente che cambia il range di numeri casuali:
+// con difficoltà 0 => tra 1 e 100
+// con difficoltà 1 => tra 1 e 80
+// con difficoltà 2 => tra 1 e 50
+
+
+
+
