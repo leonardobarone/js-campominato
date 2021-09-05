@@ -4,12 +4,31 @@ function random(min, max) {
 }
 
 // Chiedere all'utente di inserire il numero di celle di cui sarà composto il campo da gioco.
-var numeroDiCelle = parseInt(prompt("Inserisci il numero di celle di cui sarà composto il campo da gioco."));
+
 
 // Minimo di controllo
 while (isNaN(numeroDiCelle)) {
-    var numeroDiCelle = parseInt(prompt("INSERISCI UN NUMERO"));
+    var numeroDiCelle = parseInt(prompt("INSERISCI UN NUMERO DI CELLE TRA 50/80/100"));
 }
+
+// FALSE ||  
+while ( isNaN(numeroDiCelle)) {
+    var numeroDiCelle = parseInt(prompt("INSERISCI UN NUMERO DI CELLE TRA 50/80/100"));
+}
+
+// variabili di base
+var nCelle;
+
+if (numeroDiCelle == 50) {
+    nCelle = 50; 
+} else if (numeroDiCelle == 80) {
+    nCelle = 80;
+} else if (numeroDiCelle == 100) {
+    nCelle = 100;
+}
+
+var nBombe = 16;
+var possibilita = nCelle - nBombe;
 
 // Tramite una funzione javascript disegnare in pagina la griglia con massimo 10 celle per riga.
 function disegnaTabella(num) {
@@ -19,7 +38,7 @@ function disegnaTabella(num) {
     }
 
 }
-disegnaTabella(numeroDiCelle);
+disegnaTabella(numeroDiCelle)
 
 // Al click su una cella dovrà essere mostrato con un alert il numero della cella e il suo background diventerà rosso.
 
@@ -45,9 +64,9 @@ var bombe = [];
 // I numeri non possono essere duplicati.
 
 
-while ( bombe.length < 3) {
+while ( bombe.length < nBombe) {
 
-    var n = random(1, 10);
+    var n = random(1, nCelle);
 
     if ( inArray(bombe, n) == false) {
         bombe.push(n);  
@@ -66,13 +85,14 @@ campoDaGioco.addEventListener("click",
 
         if ( inArray(bombe, numeroCliccato) == true) {
             alert("HAI PERSO! il tuo punteggio è: " + numeriValidi.length);
+            location.reload();
             event.target.classList.add("rosso")
         }  else if (inArray(numeriValidi, numeroCliccato)==true) {
             alert("HAI GIA' CLICCATO SU QUESTO NUMERO");
         } else {
             numeriValidi.push(numeroCliccato);
             event.target.classList.add("verde")
-            if (numeriValidi.length == (numeroDiCelle - bombe.length)) {
+            if (numeriValidi.length == (possibilita)) {
                 alert("BRAVISSIMO HAI VINTO IL GIOCO");
             }
         }
